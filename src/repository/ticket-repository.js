@@ -21,15 +21,27 @@ class TicketRepository {
     try {
       const ticket = await NotificationTicket.findAll({
         where: {
-          status: filter.status ,
+          status: filter.status,
           notificationTime: {
             [Op.lte]: new Date(),
-          }
-        }
-      })
+          },
+        },
+      });
       return ticket;
     } catch (error) {
-      
+      throw error;
+    }
+  }
+  async update(ticketId, data) {
+    try {
+      const ticket = await NotificationTicket.findByPk(ticketId);
+      if (ticket) {
+        ticket.status = data.status;
+      }
+      await ticket.save();
+      return ticket;
+    } catch (error) {
+      throw error;
     }
   }
 }

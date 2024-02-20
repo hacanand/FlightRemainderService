@@ -22,7 +22,7 @@ app.post("/api/v1/tickets", TicketController.create);
     // );
     // cron.schedule("*/1 * * * *", async () => {
     //   console.log("Running a task every 1 minutes");
-    setupJobs();
+    //setupJobs();
     // })
   });
 };
