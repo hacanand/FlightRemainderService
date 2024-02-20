@@ -1,6 +1,7 @@
 const express = require("express");
 const { PORT } = require("./config/serverConfig");
 const { sendBasicEmail } = require("./services/email-service");
+const cron = require("node-cron");
 const bodyParser = require("body-parser");
 const app = express();
 const setupAndStartServer = async () => {
@@ -15,6 +16,9 @@ const setupAndStartServer = async () => {
     //   "Welcome to our app",
     //   "We are happy to have you on board. Let us know if you need any help."
     // );
+    cron.schedule("*/1 * * * *", async () => {
+      console.log("Running a task every 1 minutes");
+    })
   });
 };
 setupAndStartServer();
