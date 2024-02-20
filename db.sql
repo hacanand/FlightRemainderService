@@ -3,3 +3,5 @@ show DATABASES;
 use notificationsystem;
 show tables;
 desc notificationtickets;
+select * from notificationtickets;
+```
