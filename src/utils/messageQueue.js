@@ -1,5 +1,5 @@
 const amqplib = require("amqplib");
-const {MESSAGE_BROKER_URL,EXCHANGE_NAME}=require('../config/serverConfig');
+const { MESSAGE_BROKER_URL, EXCHANGE_NAME } = require("../config/serverConfig");
 const createChannel = async () => {
   try {
     const connection = await amqplib.connect(MESSAGE_BROKER_URL);
@@ -18,6 +18,11 @@ const subscribeMessage = async (channel, service, binding_key) => {
       console.log(
         `Received message from ${service} service: ${message.content.toString()}`
       );
+      const payload = JSON.parse(message.content.toString());
+      if(payload.service == 'DEMO_SERVICE'){
+        console.log('call demo service')
+        service(payload);
+      }
       channel.ack(message);
     });
   } catch (error) {

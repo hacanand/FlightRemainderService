@@ -17,33 +17,54 @@ const sendBasicEmail = async (mailFrom, mailTo, mailSubject, mailBody) => {
 };
 const fetchPendingEmails = async () => {
   try {
-    const response = await repo.get({status:"pending"});
+    const response = await repo.get({ status: "pending" });
     return response;
   } catch (error) {
     throw error;
   }
 };
 const createNotificationTicket = async (data) => {
-   try {
-      const response = await repo.create(data);
-      return response;
+  try {
+    const response = await repo.create(data);
+    return response;
   } catch (error) {
     console.log(error);
     throw error;
   }
 };
-const updateNotificationTicket = async (ticketId,data) => {
+const updateNotificationTicket = async (ticketId, data) => {
   try {
-    const response = await repo.update(ticketId,data);
+    const response = await repo.update(ticketId, data);
     return response;
   } catch (error) {
     throw error;
   }
-}
+};
+const subscribeEvents = async (payload) => {
+  let service = payload.service;
+  let data = payload.data;
+  switch (service) {
+    case "SEND_EMAIL":
+      await sendBasicEmail(
+        data.mailFrom,
+        data.mailTo,
+        data.mailSubject,
+        data.mailBody
+      );
+      break;
+    case "CREATE_TICKET":
+      await createNotificationTicket(data);
+      break;
+    default:
+      console.log("No service found");
+      break;
+  }
+};
 
 module.exports = {
   sendBasicEmail,
-   fetchPendingEmails,
+  fetchPendingEmails,
   createNotificationTicket,
   updateNotificationTicket,
+  subscribeEvents,
 };
